@@ -9,12 +9,88 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    let widthHeight: CGFloat = 100
+    let circleV: UIView! = nil
+    
+    lazy var circleView = createView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        view.addSubview(circleView)
+        
+        let gest = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
+        circleView.addGestureRecognizer(gest)
+        
+        
     }
+    
+    
+//    @objc private func handlePan(_ gesture: UITapGestureRecognizer) {
+//
+//        switch gesture.state {
+//        case .began:
+//            let tap = UITapGestureRecognizer(target: self, action: #selector(createView(_:)))
+//            view.addGestureRecognizer(tap)
+//        case .changed:
+//
+//        default:
+//            <#code#>
+//        }
+//    }
+    
+    @objc func handlePan(_ gesture: UIPanGestureRecognizer){
+ 
+        switch gesture.state {
+        case .changed:
+            var point = circleView.convert(gesture.translation(in: circleView), to: self.view)
+            print(point)
+            circleView.center = point
+//            print(gesture.translation(in: circleView))
+//            gesture.setTranslation(gesture.translation(in: circleView), in: view)
+        default:
+            print(gesture)
+        }
+       
+    }
+    
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        print("touch")
+//    }
+   
+    
+    private func createView() -> UIView{
+        
+        let x = CGFloat.random(in: 0...view.frame.size.width - widthHeight)
+        let y = CGFloat.random(in: 0...view.frame.size.height - widthHeight)
+        
+        let circleView = UIView(frame: CGRect(x: x, y: y, width: widthHeight, height: widthHeight))
+        
+        circleView.backgroundColor = randomColor()
+        circleView.layer.cornerRadius = widthHeight / 2
+        
+        return circleView
+    }
+    
 
-
+    
+//    @objc private func createView(_ touches: UITouch) -> UIView {
+//
+//        let circleView = UIView()
+//
+//        circleView.frame = CGRect(x: touches.location(in: view).x, y: touches.location(in: view).y, width: widthHeight, height: widthHeight)
+//        circleView.backgroundColor = randomColor()
+//        circleView.layer.cornerRadius = widthHeight / 2
+//        view.addSubview(circleView)
+//
+//        return circleView
+//    }
+    
+    func randomColor() -> UIColor{
+       return UIColor.init(red: CGFloat.random(in: 0...1), green: CGFloat.random(in: 0...1), blue: CGFloat.random(in: 0...1), alpha: 1)
+    }
+    
+    
 }
 
