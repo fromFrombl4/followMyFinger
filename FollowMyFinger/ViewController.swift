@@ -42,22 +42,22 @@ class ViewController: UIViewController {
     
     @objc func handlePan(_ gesture: UIPanGestureRecognizer){
  
-        switch gesture.state {
-        case .changed:
-            var point = circleView.convert(gesture.translation(in: circleView), to: self.view)
-            print(point)
-            circleView.center = point
+       
+//            var point = circleView.convert(gesture.translation(in: circleView), to: self.view)
+//            print(point)
+//            circleView.center = gesture.translation(in: circleView)
 //            print(gesture.translation(in: circleView))
 //            gesture.setTranslation(gesture.translation(in: circleView), in: view)
-        default:
-            print(gesture)
-        }
+            if gesture.state == .began || gesture.state == .changed {
+
+                let translation = gesture.translation(in: self.view)
+                // note: 'view' is optional and need to be unwrapped
+                gesture.view!.center = CGPoint(x: gesture.view!.center.x + translation.x, y: gesture.view!.center.y + translation.y)
+                gesture.setTranslation(CGPoint.zero, in: self.view)
+            }
+
        
     }
-    
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        print("touch")
-//    }
    
     
     private func createView() -> UIView{
